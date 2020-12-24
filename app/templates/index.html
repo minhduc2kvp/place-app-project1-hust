@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="google-signin-client_id" content="327947780945-tk86dd13r3khgunud3b9hhqraetbjl57.apps.googleusercontent.com"/>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>Place App Api</title>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <!-- Modal User -->
+    <div class="modal fade" id="modal-user" tabindex="-1" role="dialog" aria-labelledby="modalSite"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">My Info</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="input-name-user">Name</label>
+                            <input class="form-control" id="input-name-user" placeholder="Enter name of site" required>
+                            <div class="invalid-feedback">
+                                Please enter name of site.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-email-user">Email</label>
+                            <input class="form-control" id="input-email-user" rows="3" disabled/>
+                        </div>
+                        <div class="form-group">
+                            <label>Gender</label>
+                            <input type="hidden" id="input-hidden-radio" required>
+                            <br>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" id="checkbox-man" name="gender" value="man">
+                              <label class="form-check-label" for="checkbox-man">
+                                Man
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" id="checkbox-woman" name="gender" value="woman">
+                              <label class="form-check-label" for="checkbox-woman">
+                                Woman
+                              </label>
+                            </div>
+                            <div class="form-check">
+                              <input class="form-check-input" type="radio" id="checkbox-other" name="gender" value="other">
+                              <label class="form-check-label" for="checkbox-other">
+                                Other
+                              </label>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please select one.
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="input-birthday">Birthday</label>
+                            <input type="date" class="form-control" id="input-birthday" required>
+                            <div class="invalid-feedback">
+                                Please select your birthday.
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-save-user">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h1 class="text-center p-2 title">Place App Api</h1>
+    <div class="container">
+        <div class="d-flex justify-content-between">
+            <select id="select-place" class="col-4 mb-2 custom-select">
+            </select>
+            <div id="user-box">
+                <div class="g-signin2" data-onsuccess="onSignIn">Login Google</div>
+            </div>
+        </div>
+        <div class="map">
+            <div id="map" class="shadow"></div>
+            <div id="loading" class="">
+                <div class="spinner-border text-warning" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="alert-report"></div>
+
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBnKpstgX7lSe1om_6wudVzfxplDtGe1PQ&callback=initMap"></script>
+    <script src="https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js"></script>
+    <script src="static/js/ajax.js"></script>
+    <script src="static/js/login.js"></script>
+    <script src="static/js/main.js"></script>
+</body>
+</html>
