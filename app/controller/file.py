@@ -34,6 +34,7 @@ async def import_file(request, body):
     try:
         data_excel = pd.read_excel(body["filename"], engine='openpyxl')
         site = dict()
+        valid = data_excel[body["name"]].isna()
         for i in range(0, len(data_excel[body["name"]])):
             site = {
                 "name": data_excel[body["name"]][i],
@@ -42,6 +43,8 @@ async def import_file(request, body):
                 "longitude": data_excel[body["longitude"]][i],
                 "place_id": body["place_id"]
             }
+            if valid[i]:
+                site["name"] = "--- ? ---"
             model.create_site(site)
         return success(message.SUCCESS)
     except Exception as e:

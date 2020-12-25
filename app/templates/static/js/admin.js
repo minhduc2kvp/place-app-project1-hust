@@ -347,7 +347,6 @@ function uploadFile(){
                     let output = headers_file.map((item, index) => {
                         return `<option value="${index}">${item}</option>`
                     }).join('');
-                    console.log(output);
                     selectNameSite.html(output);
                     selectDescriptionSite.html(output);
                     selectLatitudeSite.html(output);
