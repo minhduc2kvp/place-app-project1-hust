@@ -4,7 +4,7 @@ let inputNamePlace, checkboxVip, inputNameSite, inputDesctiptionSite, inputLatit
     , modalDelete, modalPlace, modalSite
     , modalImportFile, inputFile, selectNameSite
     , selectDescriptionSite, selectLatitudeSite, selectLongitudeSite
-    , btnUploadFile, btnAcceptImportFile;
+    , btnUploadFile, btnAcceptImportFile, selectPlaceSiteTable;
 let place, site;
 let name_file_upload, headers_file = [];
 let isPlace = true; isInsert = true;
@@ -35,13 +35,15 @@ $(async function (){
     selectLongitudeSite = $("#select-longitude-site");
     btnUploadFile = $("#btn-upload-file");
     btnAcceptImportFile = $("#submit-btn-modal-import-file");
+    selectPlaceSiteTable = $("#select-place-site-table")
     viewLoading(4, dataPlaces);
     viewLoading(7, dataSites);
-    await getPlaces();
+    list_places = await getPlaces();
     setDataPlaceTable();
     setDataSelectPlace();
     setTimeout(async function (){
-        await getSites();
+        place = list_places[0];
+        list_sites = await getSitesByPlaceId(place._id.$oid);
         setDataSiteTable();
     }, 1000)
     acceptDeleteItem();
@@ -84,10 +86,11 @@ function acceptDeleteItem(){
                     }
                 })
                 .catch(e => alertInfo(false, "Delete place unsuccess"));
-            await getPlaces();
+            list_places = await getPlaces();
             setDataPlaceTable();
             setDataSelectPlace();
-            await getSites();
+            place = list_places[0];
+            list_sites = await getSitesByPlaceId(place._id.$oid);
             setDataSiteTable();
         }else{
             viewLoading(7, dataSites);
@@ -98,23 +101,10 @@ function acceptDeleteItem(){
                     }
                 })
                 .catch(e => alertInfo(false, "Delete place fail"));
-            await getSites();
+            list_sites = await getSites(place._id.$oid);
             setDataSiteTable();
         }
     });
-}
-
-async function getPlaces(){
-    await ajaxGet('places')
-        .then(rs => {
-            if (rs.status === 200){
-                list_places = rs.data.data;
-            }else{
-                console.log(rs);
-            }
-        }).catch(e => {
-            console.log(e);
-        });
 }
 
 function editPlace(index){
@@ -161,10 +151,11 @@ function acceptSubmitModalPlace(){
                     })
                     .catch(e => alertInfo(false, "Update place fail"))
             }
-            await getPlaces();
+            list_places = await getPlaces();
             setDataPlaceTable();
             setDataSelectPlace();
-            await getSites();
+            place = list_places[0];
+            list_sites = await getSitesByPlaceId(place._id.$oid);
             setDataSiteTable();
         }else{
             inputNamePlace.addClass("is-invalid");
@@ -193,19 +184,7 @@ function setDataSelectPlace(){
     }).join('');
     selectPlaceImportFile.html(output);
     selectPlace.html(output);
-}
-
-async function getSites(){
-    await ajaxGet(`sites`)
-        .then(rs => {
-            if (rs.status === 200){
-                list_sites = rs.data.data;
-            }else{
-                console.log(rs);
-            }
-        }).catch(e => {
-            console.log(e);
-        });
+    selectPlaceSiteTable.html(output);
 }
 
 function createSite(){
@@ -233,7 +212,6 @@ function editSite(index){
 
 function acceptSubmitModalSite(){
     submitBtnModalSite.on("click", async function (){
-        console.log("sumit button site click");
         let name = inputNameSite.val();
         let latitude = inputLatitudeSite.val();
         let longitude = inputLongitudeSite.val();
@@ -285,10 +263,16 @@ function acceptSubmitModalSite(){
                     })
                     .catch(e => alertInfo(false, "Update site fail"))
             }
-            await getSites();
+            list_sites = await getSitesByPlaceId(place._id.$oid);
             setDataSiteTable();
         }
     });
+}
+
+async function reloadTableSite(){
+    place = list_places[selectPlaceSiteTable.val()];
+    list_sites = await getSitesByPlaceId(place._id.$oid);
+    setDataSiteTable();
 }
 
 function setDataSiteTable(){
@@ -311,7 +295,7 @@ function setDataSiteTable(){
     dataSites.html(output);
 }
 
-// import file
+// IMPORT FILE
 function importFile(){
     modalImportFile.modal("show");
 }
@@ -389,7 +373,7 @@ function acceptImportFile(){
                     console.log(e);
                     alertInfo(false, "Import file fail");
                 })
-            await getSites();
+            list_sites = await getSitesByPlaceId(place._id.$oid);
             setDataSiteTable();
         }
     })

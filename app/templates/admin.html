@@ -118,7 +118,7 @@
                         </div>
                         <div class="form-group">
                             <label for="select-place">Place</label>
-                            <select class="form-control" id="select-place" required>
+                            <select class="custom-select" id="select-place" required>
                             </select>
                         </div>
                     </form>
@@ -158,25 +158,25 @@
                         <form class="col-6">
                             <div class="form-group">
                                 <label for="select-place-import-site">Place</label>
-                                <select class="form-control" id="select-place-import-site" required>
+                                <select class="custom-select" id="select-place-import-site" required>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="select-name-site">Name</label>
-                                <select class="form-control" id="select-name-site" required>
+                                <select class="custom-select" id="select-name-site" required>
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label for="select-latitude-site">Latitude</label>
-                                <select class="form-control" id="select-latitude-site" required></select>
+                                <select class="custom-select" id="select-latitude-site" required></select>
                             </div>
                             <div class="form-group">
                                 <label for="select-longitude-site">Longitude</label>
-                                <select class="form-control" id="select-longitude-site" required></select>
+                                <select class="custom-select" id="select-longitude-site" required></select>
                             </div>
                             <div class="form-group">
                                 <label for="select-description-site">Description</label>
-                                <select class="form-control" id="select-description-site" required></select>
+                                <select class="custom-select" id="select-description-site" required></select>
                             </div>
                         </form>
                     </div>
@@ -192,7 +192,7 @@
         <section id="section-place">
             <div class="handle mb-2 mt-5 d-flex justify-content-between">
                 <h2 class="title">Places</h2>
-                <div class="g-signin2 invisible" data-onsuccess="onSignIn">Login Google</div>
+                <div class="g-signin2 invisible" data-onsuccess="onSignIn"></div>
                 <button class="btn btn-success" id="btn-new-place" onclick="createPlace()">New Place</button>
             </div>
             <table class="table table-hover table-striped table-dark">
@@ -225,7 +225,12 @@
                         <th scope="col">Description</th>
                         <th scope="col">Latitude</th>
                         <th scope="col">Longitude</th>
-                        <th scope="col">Place</th>
+                        <th scope="col">
+                            <div class="d-flex align-items-center">
+                                <label for="select-place-site-table">Place</label>
+                                <select class="custom-select ml-2" id="select-place-site-table" onchange="reloadTableSite()" required></select>
+                            </div>
+                        </th>
                         <th scope="col">Handle</th>
                     </tr>
                 </thead>
@@ -238,7 +243,9 @@
     <div id="alert-report"></div>
 
     <script src="static/js/ajax.js"></script>
-    <script src="static/js/login.js"></script>
+    <script src="static/js/utils.js"></script>
+    <script src="static/js/service.js"></script>
+    <script src="static/js/authentication.js"></script>
     <script src="static/js/admin.js"></script>
 </body>
 

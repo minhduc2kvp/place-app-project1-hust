@@ -8,26 +8,13 @@ const ICON_MARKER_PATH = "https://chart.apis.google.com/chart?cht=mm&chs=24x32&c
 $(async function (){
     selectPlace = $('#select-place');
     onMapLoading();
-    await getPlaces();
+    list_places = await getPlaces();
     setDataSelectPlace();
     await getSites(list_places[0]._id.$oid);
     markerSites();
     endMapLoading();
     selectPlaceOnChange();
 });
-
-async function getPlaces(){
-    await ajaxGet('places')
-        .then(rs => {
-            if (rs.status === 200){
-                list_places = rs.data.data;
-            }else{
-                console.log(rs);
-            }
-        }).catch(e => {
-            console.log(e);
-        });
-}
 
 function setDataSelectPlace(){
     let output = list_places.map((place, index) => {
