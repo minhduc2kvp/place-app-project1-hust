@@ -66,9 +66,12 @@ async function getInfoUser(){
 }
 
 function setDataUserBox(){
-    let output = `<div class="d-flex shadow rounded mb-3 align-items-center pr-2" id="user-info">
-                        <img src="${user.avatar}" width="50" class="border-2 border-success rounded"/>
-                        <div class="ml-2">${user.name}</div>
+    let output = `<div class="d-flex mb-3">
+                        <div class="d-flex shadow rounded align-items-center pr-2" id="user-info">
+                            <img src="${user.avatar}" width="50" class="border-2 border-success rounded"/>
+                            <div class="ml-2">${user.name}</div>
+                        </div>
+                        <button class="btn btn-danger ml-2 shadow"  onclick="logout()">Logout</button>
                     </div>`;
     userBox.html(output);
     $("#user-info").on("click", function (){
@@ -85,7 +88,7 @@ function setDataUserBox(){
 }
 
 async function onSignIn(googleUser) {
-    let id_token = googleUser.getAuthResponse().id_token;
+  let id_token = googleUser.getAuthResponse().id_token;
     data = {
         token: id_token
     }
@@ -103,4 +106,35 @@ async function onSignIn(googleUser) {
         })
     await getInfoUser();
     setDataUserBox();
+}
+
+function onFailure(error) {
+  alertInfo(false, "Login fail");
+  console.log(error);
+}
+
+function renderButton() {
+  gapi.signin2.render('user-box', {
+    'scope': 'profile email',
+    'width': 200,
+    'height': 35,
+    'longtitle': true,
+    'theme': 'light',
+    'onsuccess': onSignIn,
+    'onfailure': onFailure
+  });
+}
+
+
+function logout() {
+    let auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+      renderButton();
+      alertInfo(true, "You are logout");
+      $.ajaxSetup({
+          headers: {
+              Authorization: ""
+          }
+        });
+    });
 }
